@@ -1,10 +1,13 @@
-let yta = require('y2mate-api')
-let handler = async(m, {conn, text}) => {
-  let audio = await yta.GetAudio("https://youtube.com/watch?v=5efrC3vLH_U")
-  conn.sendMessage(m.chat, { document: { url: audio.urlDown}, mimetype: 'audio/mpeg', fileName: `${audio.title}.mp3`}, {quoted: m})
+const axios = require("axios")
+let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
+  if (!args[0]) throw `Link nya mana?`
+  m.react('⏱️')
+  const { data: res } = await axios.get(`https://lol.zeeoneofc.my.id/api/download/ytmp3?url=${args[0]}&apikey=Alphabot`)
+  let audio = res.download
+  if (!audio) throw `Link download tidak ditemukan à²¥_à²¥`
+    conn.sendFile(m.chat, audio, res.title + '.mp3', `Sukses Download Video Dari Link ${args[0]}`, m)
 }
-handler.help = ['ytmp3 <query>']
+handler.help = ['ytmp3']
 handler.tags = ['downloader']
-handler.command = /^yt(a(udio)?|mp3|musik|lagu)$/i
-//handler.limit = true
+handler.command = /^yt(a|mp3)$/i
 module.exports = handler
