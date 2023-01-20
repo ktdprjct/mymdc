@@ -71,6 +71,8 @@ function start(file) {
 
 start('main.js')
 
+require("http").createServer((_, res) => res.end("on ! ! !")).listen(8080)
+
 function pickRandom(list) {
    return list[Math.floor(Math.random() * list.length)]
 }
