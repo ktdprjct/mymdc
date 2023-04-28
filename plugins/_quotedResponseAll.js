@@ -133,6 +133,10 @@ handler.before = async function(m, { conn, isOwner }) {
           } 
        })
     }
+    if (q.endsWith('_*ERROR!*_')) {
+        let text = `*MESSAGE!!*\n\nDari: Owner bot\nPerihal: Fitur bot yang _*error*_\nPesan: ${m.text}\n\nreply pesan ini untuk membalas pesan owner.`
+        conn.reply(m.quoted.mentionedJid[0], text, m, { mentions: this.parseMention(text) })
+    }
     //=====================================================================================================================//
 }
 handler.exp = 0
