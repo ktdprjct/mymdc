@@ -1,7 +1,7 @@
-const { sticker, sticker1, sticker2, sticker3, sticker4, sticker5, sticker6 } = require('../lib/sticker.js')
-const { webp2png } = require('../lib/webp2mp4.js')
-const uploadImage = require('../lib/uploadImage.js')
-const scrape = require('../lib/scrape.js')
+const { sticker, sticker1, sticker2, sticker3, sticker4, sticker5, sticker6 } = require('../../lib/sticker.js')
+const { webp2png } = require('../../lib/webp2mp4.js')
+const uploadImage = require('../../lib/uploadImage.js')
+const scrape = require('../../lib/scrape.js')
 const bocil = require('@bochilteam/scraper')
 const fetch = require('node-fetch')
 const Carbon = require('unofficial-carbon-now')
@@ -16,10 +16,11 @@ handler.before = async function(m, { conn, isOwner }) {
     let q = qq.hydratedFourRowTemplate ? qq.hydratedFourRowTemplate.hydratedContentText : qq.text      
     //======================================================================================================================//
     // report ans
-    if (/(REPORT|REQUEST|INVITING|ERROR|MESSAGE)!/i.test(q)) {
+    if (/(ERROR)!/i.test(q)) {
         if (!m.text) return      
         m.react('↖️')
-        conn.fakeReply(m.quoted.mentionedJid[0], `*MESSAGE!*\n\nDari : ${!isOwner ? '@' + parseInt(m.sender) : conn.getName(m.sender)}\n\nPesan : ${m.text}\n\n_Gesek pesan ini kekanan untuk membalas_`, m.quoted.mentionedJid[0], `${m.quoted.text.split`Pesan :`[1]}`, null, { mentions: [m.sender], ephemeralExpiration: 86400 })                              
+        let text = `*MESSAGE!*\n\n*Dari* : Owner bot\n*Perihal* : Fitur bot yang error\n*Pesan* : ${m.text}`
+        conn.fakeReply(m.quoted.mentionedJid[0], text, m.quoted.mentionedJid[0], `${m.quoted.text.split`Pesan :`[1]}`, null, { mentions: [m.sender], ephemeralExpiration: 86400 })                              
     }
     // quotes
     if (q.endsWith('*quotes*_')) {
@@ -132,10 +133,6 @@ handler.before = async function(m, { conn, isOwner }) {
             }
           } 
        })
-    }
-    if (q.endsWith('_*ERROR!*_')) {
-        let text = `*MESSAGE!!*\n\nDari: Owner bot\nPerihal: Fitur bot yang _*error*_\nPesan: ${m.text}\n\nreply pesan ini untuk membalas pesan owner.`
-        conn.reply(m.quoted.mentionedJid[0], text, m, { mentions: this.parseMention(text) })
     }
     //=====================================================================================================================//
 }
